@@ -7,8 +7,6 @@
 #include "main.h"
 #include "main2.h"
 
-#include "nelder_mead.h"
-
 /*****************************************************************************/
 /*****************************************************************************/
 
@@ -96,19 +94,9 @@ main( int argc, char **argv )
   parameters_to_dvector( sim.params, dvec_params );
 
 
-  // Run Nelder-Mead with the initial params as a starting point
-  simplex(run_sim, dvec_params, sim.n_parameters, .1, 1.0);
-
-  // Reinit the sim, and simulate with the best result returned by NM.
-  // I can't figure out how to get the mrdplot file to not include every
-  // simulated result from the optimization process. I really only want 
-  // the best result. Not all of them! This is my attempt to reinitialize
-  // to get rid of that, but it doesn't seem to work. Idk.
-  init_sim( &sim );
-  init_data( &sim );
+  // Run CMA-ES here
 
   dvector_to_sim(dvec_params, sim.n_parameters, sim.params);
-  run_sim( dvec_params );
 
   // Save the simulation results to a file that looks like d02015 or something.
   write_the_mrdplot_file( &sim );

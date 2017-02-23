@@ -25,8 +25,8 @@ animate.o: animate.c main.h
 animate: animate.o parameters.o ../useful/mrdplot/mrdplot.o
 	$(CC) $(CFLAGS) -o $@ animate.o parameters.o ../useful/mrdplot/mrdplot.o ../useful/drawstuff-linux/libdrawstuff.a $(XLIBS) -lm
 
-learn: learn.o parameters.o controller.o data.o nelder_mead.o $(BIPED2) ../useful/trajectory/trajectory.o ../useful/mrdplot/mrdplot.o
-	$(CC) $(CFLAGS) -o $@ learn.o parameters.o controller.o data.o nelder_mead.o $(BIPED2) ../useful/trajectory/trajectory.o ../useful/mrdplot/mrdplot.o -lm
+learn: learn.o parameters.o controller.o data.o $(BIPED2) ../useful/trajectory/trajectory.o ../useful/mrdplot/mrdplot.o
+	$(CC) $(CFLAGS) -o $@ learn.o parameters.o controller.o data.o $(BIPED2) ../useful/trajectory/trajectory.o ../useful/mrdplot/mrdplot.o -lm
 
 animate.o:	main.h main2.h
 controller.o:	main.h main2.h
@@ -35,7 +35,7 @@ dynamics.o:	main.h main2.h
 dynamics-impact.o:	main.h main2.h
 parameters.o:	main.h main2.h
 simulate.o:	main.h main2.h
-learn.o:	main.h main2.h nelder_mead.h
+learn.o:	main.h main2.h 
 
 clean: 
 	$(RM) simulate simulatei animate learn *.o
