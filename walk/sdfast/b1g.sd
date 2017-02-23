@@ -1,0 +1,58 @@
+#sdfast -lc -ge -pb1g b1g.sd
+#need to login to run.graphics.cs.cmu.edu
+
+# This is a planarized model of the 1st 2d biped (now at ATR) on a boom
+
+# Coordinates: 
+#   n1 = X = body forward
+#   n2 = Y = body left
+#   n3 = Z = up
+
+language = c
+
+gravity = 0 0 -9.81
+
+# Create the basic body on a planar joint representing our boom
+# constraint.  The planar joint pin vectors as as follows:
+#
+#   first slider joint axis    : X
+#   second slider joint axis   : Z
+#   pin joint axis             : pitch, oriented along Y
+#
+# As defined, the axes of the joint are coincident with the
+# center of mass of the pelvis.
+#
+body = pelvis  inb = $ground  joint = planar
+  inbtojoint = 0 0 0   
+  bodytojoint = 0 0 0?
+  pin = 1 0 0
+  pin = 0 0 1
+  pin = 0 1 0
+  mass = 1.54?
+  inertia = 1.0 0.000645073978666667? 1.0
+body = l.thigh  inb = pelvis  joint = pin
+  inbtojoint = 0 0 0.0?
+  bodytojoint = 0 0 0.0719666666666667?
+  pin = 0 1 0
+  mass = 0.54?
+  inertia = 1.0 0.000688684713466528? 1.0
+body = l.shin  inb = l.thigh  joint = pin
+  inbtojoint = 0 0 -0.131233333333333?
+  bodytojoint = 0 0 0.1016?
+  pin = 0 1 0
+  mass = 0.1?
+  inertia = 1.0 0.000349461666666667? 1.0
+body = r.thigh  inb = pelvis  joint = pin
+  inbtojoint = 0 0 0.0?
+  bodytojoint = 0 0 0.0719666666666667?
+  pin = 0 1 0
+  mass = 0.54?
+  inertia = 1.0 0.000688684713466528? 1.0
+body = r.shin  inb = r.thigh  joint = pin
+  inbtojoint = 0 0 -0.131233333333333?
+  bodytojoint = 0 0 0.1016?
+  pin = 0 1 0
+  mass = 0.1?
+  inertia = 1.0 0.000349461666666667? 1.0
+
+
