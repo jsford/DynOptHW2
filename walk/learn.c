@@ -13,16 +13,45 @@
 /*****************************************************************************/
 
 extern SIM sim;
+double init_params[100];
 
 /*****************************************************************************/
 
+void scale( double* vec, int dim) {
+    int i;
+    for(i=0; i<dim; i++) {
+        vec[i] *= init_params[i];
+    }
+}
+
+void rescale( double vec[], int dim) {
+    int i;
+    for(i=0; i<dim; i++) {
+        vec[i] /= init_params[i];
+    }
+}
+
 double run_sim( double x[], int dim)
 {
+  int i;
+  printf("SCALED PARAMS: ");
+  for( i = 0; i < dim; i++ ) {
+    printf("%f, ", x[i]);
+  }
+  printf("\n");
+
+  scale( x, dim );
+
+  printf("UNSCALED PARAMS: ");
+  for( i = 0; i < dim; i++ ) {
+    printf("%f, ", x[i]);
+  }
+  printf("\n\n");
+
   assert(dim == sim.n_parameters);
   reinit_sim( &sim );
   dvector_to_sim(x, sim.n_parameters, sim.params);
 
-  int i;
 
   for( i = 0; sim.time < sim.duration; i++ )
     {
@@ -35,10 +64,17 @@ double run_sim( double x[], int dim)
   return get_score( &sim );
 }
 
-double run_cmaes( double initial_guess[] ) {
+
+double run_cmaes( double vec[] ) {
+
+    int i;
+    double initial_guess[sim.n_parameters]; 
+    for(i=0; i<sim.n_parameters; i++) {
+        initial_guess[i] = 1.0;
+    }
+
     cmaes_t evo;
     double *arFunvals, *const*pop, *xfinal;
-    int i;
 
     arFunvals = cmaes_init(&evo, 0, initial_guess, NULL, 0, 0, "cmaes/cmaes_initials.par");
     printf("%s\n", cmaes_SayHello(&evo));
@@ -61,6 +97,7 @@ double run_cmaes( double initial_guess[] ) {
     cmaes_WriteToFile(&evo, "all", "allcmaes.dat");
 
     xfinal = cmaes_GetNew(&evo, "xmean");
+    rescale(xfinal, sim.n_parameters);
     cmaes_exit(&evo);
 
     free(xfinal);
@@ -101,11 +138,10 @@ main( int argc, char **argv )
   sim.controller_print = 0;
   sim.params = params;
 
-  double dvec_params[sim.n_parameters];
-  parameters_to_dvector(sim.params, dvec_params);
+  parameters_to_dvector(sim.params, init_params);
 
   // Run CMA-ES here
-  run_cmaes(dvec_params);
+  run_cmaes(init_params);
 
   // Save the simulation results to a file that looks like d02015 or something.
   write_the_mrdplot_file( &sim );
