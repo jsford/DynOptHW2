@@ -3,43 +3,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <assert.h>
 
 #include "main.h"
 #include "main2.h"
 
-/*****************************************************************************/
+#include "cmaes/src/cmaes_interface.h"
+
 /*****************************************************************************/
 
 extern SIM sim;
 
-int n_parameters;
-
-/*****************************************************************************/
-/*****************************************************************************/
-// Example of optimizing a value
-/*****************************************************************************/
 /*****************************************************************************/
 
-/*
-double run_sim( SIM *sim )
+double run_sim( double x[], int dim)
 {
-  int i;
-
-  for( i = 0; sim->time < sim->duration; i++ )
-    {
-      controller( sim );
-      save_data( sim );
-      if ( sim->status == CRASHED )
-	break;
-      integrate_one_time_step( sim );
-    }
-
-  return get_score( sim );
-}
-*/
-
-double run_sim( double x[] )
-{
+  assert(dim == sim.n_parameters);
   reinit_sim( &sim );
   dvector_to_sim(x, sim.n_parameters, sim.params);
 
@@ -55,6 +34,40 @@ double run_sim( double x[] )
 
   return get_score( &sim );
 }
+
+double run_cmaes( double initial_guess[] ) {
+    cmaes_t evo;
+    double *arFunvals, *const*pop, *xfinal;
+    int i;
+
+    arFunvals = cmaes_init(&evo, 0, initial_guess, NULL, 0, 0, "cmaes/cmaes_initials.par");
+    printf("%s\n", cmaes_SayHello(&evo));
+    cmaes_ReadSignals(&evo, "cmaes/cmaes_signals.par");
+
+    while(!cmaes_TestForTermination(&evo)) {
+        
+        pop = cmaes_SamplePopulation(&evo);
+
+        for(i = 0; i < cmaes_Get(&evo, "lambda"); ++i) {
+            arFunvals[i] = run_sim(pop[i], (int) cmaes_Get(&evo, "dim"));
+        } 
+
+        cmaes_UpdateDistribution(&evo, arFunvals);
+
+        cmaes_ReadSignals(&evo, "cmaes/cmaes_signals.par");
+        fflush(stdout);
+    }
+    printf("Stop:\n%s\n", cmaes_TestForTermination(&evo));
+    cmaes_WriteToFile(&evo, "all", "allcmaes.dat");
+
+    xfinal = cmaes_GetNew(&evo, "xmean");
+    cmaes_exit(&evo);
+
+    free(xfinal);
+
+    return 0;
+}
+
 /*****************************************************************************/
 
 main( int argc, char **argv )
@@ -88,15 +101,11 @@ main( int argc, char **argv )
   sim.controller_print = 0;
   sim.params = params;
 
-  // Optimization works on an array of doubles, not a SIM struct
   double dvec_params[sim.n_parameters];
-  // Extract the initial params to the double array dvec_params
-  parameters_to_dvector( sim.params, dvec_params );
-
+  parameters_to_dvector(sim.params, dvec_params);
 
   // Run CMA-ES here
-
-  dvector_to_sim(dvec_params, sim.n_parameters, sim.params);
+  run_cmaes(dvec_params);
 
   // Save the simulation results to a file that looks like d02015 or something.
   write_the_mrdplot_file( &sim );
