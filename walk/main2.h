@@ -4,6 +4,7 @@ int process_parameters( PARAMETER *p, SIM *s, int verbose );
 int reinit_sim( SIM *s );
 int init_sim( SIM *s );
 double get_score( SIM *s );
+double get_score_result( SIM *s );
 void parameters_to_dvector( PARAMETER *p, double *v );
 void init_data( SIM *s );
 int save_data( SIM *s );

@@ -89,6 +89,7 @@ double run_sim( SIM *sim, double* par)
     {
       controller( sim );
       save_data( sim );
+
       if ( sim->status == CRASHED )
   break;
       integrate_one_time_step( sim );
@@ -159,6 +160,7 @@ int main(int argn, char **args) {
       
     }
   printf("Stop:\n%s\n",  cmaes_TestForTermination(&evo)); /* print termination reason */
+
   cmaes_WriteToFile(&evo, "all", "allcmaes.dat");         /* write final results */
 
   /* get best estimator for the optimum, xmean */
@@ -166,6 +168,7 @@ int main(int argn, char **args) {
   cmaes_exit(&evo); /* release memory */ 
 
   reinit_sim(&sim);
+
   run_sim(&sim, xfinal);
   write_the_mrdplot_file( &sim );
   /* do something with final solution and finally release memory */

@@ -157,13 +157,21 @@ void update_score( SIM *s )
 
 double get_score( SIM *s )
 {
+  //printf( "cost: %g, %g; crashed %g (%d); torque %g; speed %g; knee %g; clearance %g; f_x %g; f_z %g; pitchd %g\n",
+//	  s->summed_score, s->discounted_score, s->crashed_score, s->status,
+//	  s->torque_score, s->speed_score, s->knee_score, s->clearance_score,
+//	  s->f_x_score, s->f_z_score, s->pitchd_score );
+  return s->summed_score;
+}
+
+double get_score_result( SIM *s )
+{
   printf( "cost: %g, %g; crashed %g (%d); torque %g; speed %g; knee %g; clearance %g; f_x %g; f_z %g; pitchd %g\n",
 	  s->summed_score, s->discounted_score, s->crashed_score, s->status,
 	  s->torque_score, s->speed_score, s->knee_score, s->clearance_score,
 	  s->f_x_score, s->f_z_score, s->pitchd_score );
   return s->summed_score;
 }
-
 /*****************************************************************************/
 /* call this many times to restart a controller, called by reinint_sim() */
 
