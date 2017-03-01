@@ -96,7 +96,7 @@ double run_sim( SIM *sim, double* par)
     }
 
   // write_the_mrdplot_file( sim );
-  return get_score( sim );
+  return get_score_result( sim );
 }
 
 

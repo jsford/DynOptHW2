@@ -10,7 +10,7 @@ restarts 0                    # read by example_restarts.c, remark that restarts
 ## --- OBLIGATORY SETTINGS
 # these settings, if read, overwrite the input values to cmaes_init 
 
-<<<<<<< HEAD
+
  N 21       # Problem dimension, overwrites parameter in cmaes_init
  initialX 21:   # Initial search point. Syntax: 1==read one number, see also end of file. 
    0.89 -0.047 0.33 -0.37 -0.43 0.29 0.26 -0.080 0.021 -0.024 -0.22 -0.031 0.28 0.085 0.41 -0.38 -0.046 -0.29 -0.36 -0.022 -0.020      #    these are the read value(s)!
@@ -18,15 +18,7 @@ restarts 0                    # read by example_restarts.c, remark that restarts
     0.0        #    these are the read value(s)
  initialStandardDeviations  21:   #  1==read only one number for all coordinates
    0.03 0.03 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02                         #  numbers should not differ by orders of magnitude
-=======
- N 21        # Problem dimension, overwrites parameter in cmaes_init
- initialX 21:   # Initial search point. Syntax: 1==read one number, see also end of file. 
-   0.89 -0.047 0.33 -0.37 -0.10 -0.43 0.29 0.26 -0.080 0.11 -0.14 -0.22 -0.031 0.28 0.085 0.41 -0.38 -0.046 -0.29 -0.36 -0.12       #    these are the read value(s)!
-# typicalX 1:   # Typical search point (useful for restarts, cave: boundaries), overwritten by initialX 
-    0.0        #    these are the read value(s)
- initialStandardDeviations  21:   #  1==read only one number for all coordinates
-   0.03 0.03 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02 0.02                          #  numbers should not differ by orders of magnitude
->>>>>>> 9e3dd28358cf23fdf98b54e0277297eeb2166ddc
+
                                  #  should be roughly 1/4 of the search interval
                                  #  this number essentially influences the global 
                                  #  search ability (ie. the horizon where to search
@@ -40,7 +32,7 @@ stopMaxFunEvals   1e1000    # max number of f-evaluations, 900*(N+3)*(N+3) is de
 # fac*maxFunEvals   1e0     # multiplies stopMaxFunEvals by read number, default is 1
 stopMaxIter       1e299     # max number of iterations (generations), inf is default
 
-stopFitness 600   # stop if function value is smaller than stopFitness
+stopFitness 400   # stop if function value is smaller than stopFitness
                      # commented == never stop on function value (default)
 stopTolFun 1e-20     # stop if function value differences are 
                      # smaller than stopTolFun, default=1e-12
