@@ -15,6 +15,30 @@
 
 /*****************************************************************************/
 
+double update_parameters(SIM *s, double sigma)
+{
+  double epsilon = 0.00000001;
+  double two_pi = 2.0 * 3.14159265358979323846;
+
+  double z0, z1;
+  double u1, u2;
+  do
+  {
+    u1 = rand() * (1.0 / RAND_MAX);
+    u2 = rand() * (1.0 / RAND_MAX);
+  }
+  while(u1 <= epsilon);
+
+  z0 = sqrt(-2.0 * log(u1)) * cos(two_pi * u2);
+  s->torso_perturbation = z0 * sigma;
+
+  return z0 * sigma;
+
+
+}
+
+
+
 void
 init_default_parameters( SIM *s )
 {

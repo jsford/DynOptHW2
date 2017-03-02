@@ -1,0 +1,15 @@
+N100_cost400 - 100N of force every 5 seconds. 80 iterations for lambda = 13
+N200_cost1300 - 200N of force every 5 seconds. There was instances that worked and if we ran the optimization function for a bit longer, we will definitely have had a result that worked. Took about 330 generations using 13 for the value of lambda. 
+
+Let's try 200,300,400
+
+
+
+
+Also let's try to randomize the timestep which we push and see how much force we can take
+
+
+Also let's try different number of lambda -> currently we are doing 13, we have 21 dimensional data, I think about 50 sounds better.
+
+N200_cost1300 - 360 generations (ran for about 7 hours) 100=lambda. Doesn't bring much difference from having 13=lambda
+

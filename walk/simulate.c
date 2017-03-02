@@ -11,6 +11,7 @@
 /*****************************************************************************/
 
 extern SIM sim;
+double SIGMA = 100;
 
 /*****************************************************************************/
 /*****************************************************************************/
@@ -44,13 +45,8 @@ main( int argc, char **argv )
 
   for( i = 0; sim.time < sim.duration; i++ )
     {
-      if ( (i % 1000) == 0 )
-        {
-	  /*
-          printf( "%g: %g %g\n", sim.time,
-		  sim.foot[LEFT][XX], sim.foot[LEFT][ZZ] );
-	  */
-        }
+      if(i % 5 == 0){update_parameters(&sim, SIGMA);}
+      else{sim.torso_perturbation = 0;}
       controller( &sim );
       save_data( &sim );
       if ( sim.status == CRASHED )

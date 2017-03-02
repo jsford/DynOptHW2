@@ -14,6 +14,8 @@
 
 extern SIM sim;
 double opt_params[21];
+double SIGMA = 150;
+
 /*Run a simulation/Evaluate the objective function*/
 double run_sim_nosave( SIM *sim, double *par )
 {
@@ -46,6 +48,8 @@ double run_sim_nosave( SIM *sim, double *par )
 
   for( i = 0; sim->time < sim->duration; i++ )
     {
+      if(i % 5 == 0){update_parameters(sim, SIGMA);}
+      else{sim->torso_perturbation = 0;}
       controller( sim );
       if ( sim->status == CRASHED )
   break;
@@ -87,6 +91,8 @@ double run_sim( SIM *sim, double* par)
 
   for( i = 0; sim->time < sim->duration; i++ )
     {
+      if(i % 5 == 0){update_parameters(sim, SIGMA);}
+      else{sim->torso_perturbation = 0;}
       controller( sim );
       save_data( sim );
 
