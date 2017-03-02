@@ -14,7 +14,7 @@
 
 extern SIM sim;
 double opt_params[21];
-double SIGMA = 150;
+double SIGMA = 50;
 
 /*Run a simulation/Evaluate the objective function*/
 double run_sim_nosave( SIM *sim, double *par )
@@ -46,9 +46,16 @@ double run_sim_nosave( SIM *sim, double *par )
   sim->stance_ankle_torque =par[19];
   sim->swing_ha1=par[20];
 
+  int random_time[4];
+  for(i = 0; i< 4; i++)
+  {
+    random_time[i] = rand() % 20;
+  }
+
   for( i = 0; sim->time < sim->duration; i++ )
     {
-      if(i % 5 == 0){update_parameters(sim, SIGMA);}
+      if( i==random_time[0] || i==random_time[1] || i==random_time[2] || i == random_time[3])
+        {update_parameters(sim, SIGMA);}
       else{sim->torso_perturbation = 0;}
       controller( sim );
       if ( sim->status == CRASHED )
@@ -89,9 +96,20 @@ double run_sim( SIM *sim, double* par)
 
   int i;
 
+  int random_time[4];
+  for(i = 0; i< 4; i++)
+  {
+    random_time[i] = rand() % 20;
+    
+  }
+  printf("random time selected is %d, %d, %d, %d", random_time[0], random_time[1], random_time[2], random_time[3]);
+  printf("sim_duration is : %f\n\n\n\n\n", sim->duration);
+
+
   for( i = 0; sim->time < sim->duration; i++ )
     {
-      if(i % 5 == 0){update_parameters(sim, SIGMA);}
+      if( i==random_time[0] || i==random_time[1] || i==random_time[2] || i == random_time[3])
+        {update_parameters(sim, SIGMA);}
       else{sim->torso_perturbation = 0;}
       controller( sim );
       save_data( sim );
